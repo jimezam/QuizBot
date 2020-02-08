@@ -2,6 +2,7 @@
 use App\Http\Controllers\BotManController;
 
 use App\Conversations\SaludoEdad;
+use App\Conversations\RealizarQuizConversacion;
 
 $botman = resolve('botman');
 
@@ -36,7 +37,22 @@ $botman->hears('acerca de|acerca', function ($bot) {
     $bot->reply($msj);
 });
 
+$botman->hears('listar quizzes|listar', function ($bot) {
+    $quizzes = \App\Quiz::orderby('titulo', 'asc')->get();
 
+    foreach($quizzes as $quiz)
+    {
+        $bot->reply($quiz->id."- ".$quiz->titulo);
+    }
+
+    if(count($quizzes) == 0)
+            $bot->reply("Ups, no hay cuestionarios para mostrar.");
+});
+
+$botman->hears('iniciar quiz {id}', function ($bot, $id) {
+    $bot->startConversation(
+new \App\Conversations\RealizarQuizConversacion($id));
+})->stopsConversation();
 
 
 
