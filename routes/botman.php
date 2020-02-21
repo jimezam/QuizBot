@@ -8,6 +8,12 @@ $botman = resolve('botman');
 
 ///////////////////////////////////////////////
 
+$botman->hears('Hi', function ($bot) {
+    $bot->reply("Hello!");
+});
+
+///////////////////////////////////////////////
+
 $botman->hears('/start', function ($bot) {
     $nombres = $bot->getUser()->getFirstName() ?: "desconocido";
     $bot->reply('Hola ' . $nombres . ', bienvenido al bot de quices!');
